@@ -29,7 +29,40 @@ async function signin({ email, password }) {
   return token;
 }
 
+
+async function findDoctorByCity({city}) {
+  const { rowCount, rows } = await doctorsRepository.findDoctorByCity(city);
+  if (!rowCount) throw errors.notFoundError(city);
+
+  return rows;
+}
+
+async function findDoctorByState({state}) {
+  const { rowCount, rows } = await doctorsRepository.findDoctorByState(state);
+  if (!rowCount) throw errors.notFoundError(state);
+
+  return rows;
+}
+
+async function findDoctorBySpecialty({specialty}) {
+  const { rowCount, rows } = await doctorsRepository.findDoctorBySpecialty(specialty);
+  if (!rowCount) throw errors.notFoundError(specialty);
+
+  return rows;
+}
+
+async function findDoctorByName({name}) {
+  const { rowCount, rows } = await doctorsRepository.findDoctorByName(name);
+  if (!rowCount) throw errors.notFoundError(name);
+
+  return rows;
+}
+
 export default {
   create,
   signin,
+  findDoctorByCity,
+  findDoctorByState,
+  findDoctorBySpecialty,
+  findDoctorByName
 };

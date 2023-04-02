@@ -7,5 +7,9 @@ const doctorsRoutes = Router();
 
 doctorsRoutes.post("/signup", validateSchema(doctorSchemma) , doctorsController.create)
 doctorsRoutes.post("/signin", doctorsController.signin)
+doctorsRoutes.get("/specialty", doctorsController.findDoctorsBySpecialty)
+doctorsRoutes.get("/city", doctorsController.findDoctorsByCity)
+doctorsRoutes.get("/state", doctorsController.findDoctorsByState)
+doctorsRoutes.get("/name", doctorsController.findDoctorsByName)
 
 export default doctorsRoutes;
