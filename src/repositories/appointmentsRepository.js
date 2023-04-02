@@ -18,7 +18,7 @@ async function findAppointmentsByDate(doctor_id, date, time) {
     const endTime = new Date(times.getTime() + 30 * 60000);
 
     return await connectionDb.query(
-        `SELECT "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date
+        `SELECT "public.appointments".id, "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date, "public.appointments".canceled
         FROM "public.appointments"
         JOIN "public.doctors" ON "public.appointments".doctor_id = "public.doctors".id
         JOIN "public.patients" ON "public.appointments".patient_id = "public.patients".id
@@ -32,9 +32,8 @@ async function findAppointmentsByDate(doctor_id, date, time) {
   }
 
   async function findAppointmentsById(appointment_id) {
- 
     return await connectionDb.query(
-        `SELECT "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date
+        `SELECT "public.appointments".id, "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date, "public.appointments".canceled
         FROM "public.appointments"
         JOIN "public.doctors" ON "public.appointments".doctor_id = "public.doctors".id
         JOIN "public.patients" ON "public.appointments".patient_id = "public.patients".id
@@ -43,11 +42,33 @@ async function findAppointmentsByDate(doctor_id, date, time) {
     );
   }
 
+  async function findAppointmentsByDoctorId(doctor_id) {
+    return await connectionDb.query(
+        `SELECT "public.appointments".id, "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date, "public.appointments".canceled
+        FROM "public.appointments"
+        JOIN "public.doctors" ON "public.appointments".doctor_id = "public.doctors".id
+        JOIN "public.patients" ON "public.appointments".patient_id = "public.patients".id
+        WHERE "public.doctors".id = $1 `,
+      [doctor_id]
+    );
+  }
+
+  async function findAppointmentsByPatientId(patient_id) {
+    return await connectionDb.query(
+        `SELECT "public.appointments".id, "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date, "public.appointments".canceled
+        FROM "public.appointments"
+        JOIN "public.doctors" ON "public.appointments".doctor_id = "public.doctors".id
+        JOIN "public.patients" ON "public.appointments".patient_id = "public.patients".id
+        WHERE "public.patients".id = $1 `,
+      [patient_id]
+    );
+  }
+
   async function cancelAppointment(appointment_id) {
 
     await connectionDb.query(
     `
-    UPDATE public.appointments
+    UPDATE "public.appointments"
     SET canceled = true WHERE "public.appointments".id = $1;
     `,
     [appointment_id]
@@ -58,5 +79,7 @@ export default {
     createAppointment,
     findAppointmentsByDate,
     cancelAppointment,
-    findAppointmentsById
+    findAppointmentsById,
+    findAppointmentsByDoctorId,
+    findAppointmentsByPatientId
   };

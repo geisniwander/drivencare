@@ -19,22 +19,34 @@ async function cancelAppointment(req, res, next) {
     next(err);
   }
 }
-/*
-async function findDoctorsBySpecialty(req, res, next) {
-  const { specialty } = req.body;
+
+async function findAppointmentsByDoctorId(req, res, next) {
+  const { doctor_id } = req.body;
   try {
-    const doctors = await doctorService.findDoctorBySpecialty({ specialty });
-    return res.send({ doctors });
+    const appointments = await appointmentService.findAppointmentsByDoctorId(doctor_id );
+
+    return res.send({ appointments });
   } catch (err) {
     next(err);
   }
 }
-*/
 
+async function findAppointmentsByPatientId(req, res, next) {
+  const { patient_id } = req.body;
+  try {
+    const appointments = await appointmentService.findAppointmentsByPatientId(patient_id );
 
+    return res.send({ appointments });
+
+  } catch (err) {
+    next(err);
+  }
+}
 
 
 export default {
     createAppointment,
-    cancelAppointment
+    cancelAppointment,
+    findAppointmentsByPatientId,
+    findAppointmentsByDoctorId
 };
