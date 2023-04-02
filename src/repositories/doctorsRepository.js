@@ -58,7 +58,7 @@ async function findDoctorByState(state) {
 async function findDoctorByName(name) {
   return await connectionDb.query(
     `    
-    SELECT name, email, specialty, city, state FROM "public.doctors" WHERE name ILIKE $1 || '%'
+    SELECT id, name, email, specialty, city, state FROM "public.doctors" WHERE name ILIKE $1 || '%'
   `,
     [name.toLowerCase()]
   );

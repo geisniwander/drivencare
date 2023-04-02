@@ -4,6 +4,13 @@ function conflictError(message) {
       message,
     };
   }
+
+  function ConflictDateError(message) {
+    return {
+      name: "ConflictDateError",
+      message:"A data/horário não estão disponíveis (consulta agendada no horário ou fora do horário de atendimento",
+    };
+  }
   
   function duplicatedEmailError(email) {
     return {
@@ -40,4 +47,5 @@ function conflictError(message) {
     unauthorizedError,
     notFoundError,
     invalidCredentialsError,
+    ConflictDateError
   };

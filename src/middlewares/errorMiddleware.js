@@ -7,6 +7,12 @@ export function handleApplicationErrors(err, req, res, next) {
       .send({ message: err.message, email: err.email });
   }
 
+  if (err.name === "ConflictDateError") {
+    return res
+      .status(httpStatus.CONFLICT)
+      .send({ message: err.message, date: err.date });
+  }
+
   if (err.name === "InvalidCredentialsError") {
     return res.status(httpStatus.UNAUTHORIZED).send({
       message: err.message,
