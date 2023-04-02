@@ -40,6 +40,13 @@ function conflictError(message) {
       message: "Credenciais incorretas",
     };
   }
+
+  function invalidAppointmentError() {
+    return {
+      name: "InvalidAppointmentError",
+      message: "Consulta não encontrada",
+    };
+  }
   
   export default {
     conflictError,
@@ -47,5 +54,6 @@ function conflictError(message) {
     unauthorizedError,
     notFoundError,
     invalidCredentialsError,
-    ConflictDateError
+    ConflictDateError,
+    invalidAppointmentError
   };

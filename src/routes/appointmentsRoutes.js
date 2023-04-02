@@ -6,5 +6,6 @@ import { appointmentSchema } from "../schemas/Appointment.js";
 const appointmentsRoutes = Router();
 
 appointmentsRoutes.post("/create", validateSchema(appointmentSchema) , appointmentsController.createAppointment)
+appointmentsRoutes.put("/cancel", appointmentsController.cancelAppointment)
 
 export default appointmentsRoutes;

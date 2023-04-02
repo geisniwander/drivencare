@@ -10,6 +10,15 @@ async function createAppointment(req, res, next) {
   }
 }
 
+async function cancelAppointment(req, res, next) {
+  const { appointment_id } = req.body;
+  try {
+    await appointmentService.cancelAppointment(appointment_id);
+    return res.sendStatus(201);
+  } catch (err) {
+    next(err);
+  }
+}
 /*
 async function findDoctorsBySpecialty(req, res, next) {
   const { specialty } = req.body;
@@ -26,5 +35,6 @@ async function findDoctorsBySpecialty(req, res, next) {
 
 
 export default {
-    createAppointment
+    createAppointment,
+    cancelAppointment
 };

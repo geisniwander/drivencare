@@ -12,6 +12,14 @@ async function createAppointment({ patient_id, doctor_id, date, hour }) {
   await appointmentsRepository.createAppointment({patient_id, doctor_id, date, hour});
 }
 
+async function cancelAppointment(appointment_id) {
+
+  const { rowCount } = await appointmentsRepository.findAppointmentsById(appointment_id);
+  if (!rowCount) throw errors.invalidAppointmentError(appointment_id);
+
+  await appointmentsRepository.cancelAppointment(appointment_id);
+}
+
 async function findDoctorByCity({city}) {
   const { rowCount, rows } = await doctorsRepository.findDoctorByCity(city);
   if (!rowCount) throw errors.notFoundError(city);
@@ -24,4 +32,5 @@ async function findDoctorByCity({city}) {
 export default {
 createAppointment,
 findDoctorByCity,
+cancelAppointment
 };

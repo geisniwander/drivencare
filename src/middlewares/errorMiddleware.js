@@ -25,7 +25,7 @@ export function handleApplicationErrors(err, req, res, next) {
     });
   }
 
-  if (err.name === "NotFoundError") {
+  if (err.name === "NotFoundError" || err.name === "InvalidAppointmentError") {
     return res.status(httpStatus.NOT_FOUND).send({
       message: err.message,
     });

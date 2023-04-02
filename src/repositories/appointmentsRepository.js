@@ -25,12 +25,38 @@ async function findAppointmentsByDate(doctor_id, date, time) {
         WHERE doctor_id = $1 
         AND date = $2 
         AND time >= $3 
-        AND time <= $4;`,
+        AND time <= $4
+        AND canceled = false;`,
       [doctor_id, date, startTime.toLocaleTimeString(), endTime.toLocaleTimeString()]
     );
   }
 
+  async function findAppointmentsById(appointment_id) {
+ 
+    return await connectionDb.query(
+        `SELECT "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date
+        FROM "public.appointments"
+        JOIN "public.doctors" ON "public.appointments".doctor_id = "public.doctors".id
+        JOIN "public.patients" ON "public.appointments".patient_id = "public.patients".id
+        WHERE "public.appointments".id = $1 `,
+      [appointment_id]
+    );
+  }
+
+  async function cancelAppointment(appointment_id) {
+
+    await connectionDb.query(
+    `
+    UPDATE public.appointments
+    SET canceled = true WHERE "public.appointments".id = $1;
+    `,
+    [appointment_id]
+  );
+}
+
 export default {
     createAppointment,
-    findAppointmentsByDate
+    findAppointmentsByDate,
+    cancelAppointment,
+    findAppointmentsById
   };
