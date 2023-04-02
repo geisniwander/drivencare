@@ -64,6 +64,30 @@ async function findAppointmentsByDate(doctor_id, date, time) {
     );
   }
 
+  async function findAppointmentsFinishedByPatient(patient_id) {
+    return await connectionDb.query(
+        `SELECT "public.appointments".id, "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date, "public.appointments".canceled
+        FROM "public.appointments"
+        JOIN "public.doctors" ON "public.appointments".doctor_id = "public.doctors".id
+        JOIN "public.patients" ON "public.appointments".patient_id = "public.patients".id
+        WHERE "public.patients".id = $1 
+        AND "public.appointments".finished = true`,
+      [patient_id]
+    );
+  }
+
+  async function findAppointmentsFinishedByDoctor(doctor_id) {
+    return await connectionDb.query(
+        `SELECT "public.appointments".id, "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date, "public.appointments".canceled
+        FROM "public.appointments"
+        JOIN "public.doctors" ON "public.appointments".doctor_id = "public.doctors".id
+        JOIN "public.patients" ON "public.appointments".patient_id = "public.patients".id
+        WHERE "public.doctors".id = $1 
+        AND "public.appointments".finished = true`,
+      [doctor_id]
+    );
+  }
+
   async function cancelAppointment(appointment_id) {
 
     await connectionDb.query(
@@ -75,11 +99,25 @@ async function findAppointmentsByDate(doctor_id, date, time) {
   );
 }
 
+async function finishAppointment(appointment_id) {
+
+  await connectionDb.query(
+  `
+  UPDATE "public.appointments"
+  SET finished = true WHERE "public.appointments".id = $1;
+  `,
+  [appointment_id]
+);
+}
+
 export default {
     createAppointment,
     findAppointmentsByDate,
     cancelAppointment,
     findAppointmentsById,
     findAppointmentsByDoctorId,
-    findAppointmentsByPatientId
+    findAppointmentsByPatientId,
+    findAppointmentsFinishedByPatient,
+    findAppointmentsFinishedByDoctor,
+    finishAppointment
   };
