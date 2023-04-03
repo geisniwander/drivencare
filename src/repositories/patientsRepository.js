@@ -9,7 +9,7 @@ async function findPatientByEmail(email) {
   );
 }
 
-async function createPatient({ name, email, password}) {
+async function createPatient({ name, email, password }) {
   await connectionDb.query(
     `
         INSERT INTO "public.patients" (name, email, password)
@@ -31,5 +31,5 @@ async function findPatientById(id) {
 export default {
   findPatientByEmail,
   createPatient,
-  findPatientById
+  findPatientById,
 };

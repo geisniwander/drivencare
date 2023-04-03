@@ -3,7 +3,14 @@ import doctorService from "../services/doctorService.js";
 async function create(req, res, next) {
   const { name, email, password, specialty, city, state } = req.body;
   try {
-    await doctorService.create({ name, email, password, specialty, city, state });
+    await doctorService.create({
+      name,
+      email,
+      password,
+      specialty,
+      city,
+      state,
+    });
     return res.sendStatus(201);
   } catch (err) {
     next(err);
@@ -70,8 +77,6 @@ async function getSchedule(req, res, next) {
   }
 }
 
-
-
 export default {
   create,
   signin,
@@ -79,5 +84,5 @@ export default {
   findDoctorsByCity,
   findDoctorsByState,
   findDoctorsByName,
-  getSchedule
+  getSchedule,
 };

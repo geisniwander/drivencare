@@ -15,7 +15,14 @@ async function create({ name, email, password, specialty, city, state }) {
         INSERT INTO "public.doctors" (name, email, password, specialty, city, state)
         VALUES ($1, $2, $3, $4, $5, $6)
     `,
-    [name, email, password, specialty.toLowerCase(), city.toLowerCase(), state.toLowerCase()]
+    [
+      name,
+      email,
+      password,
+      specialty.toLowerCase(),
+      city.toLowerCase(),
+      state.toLowerCase(),
+    ]
   );
 }
 
@@ -64,7 +71,7 @@ async function findDoctorByName(name) {
   );
 }
 
-async function getSchedule({id, date}) {
+async function getSchedule({ id, date }) {
   return await connectionDb.query(
     `    
     SELECT slots.time
@@ -81,10 +88,9 @@ async function getSchedule({id, date}) {
     AND slots.time BETWEEN (a.date || ' ' || a.time)::timestamp - interval '29 minutes'
     AND (a.date || ' ' || a.time)::timestamp + interval '29 minutes'
     WHERE a.id IS NULL;  `,
-    [`${date} 07:00:00`,id, date]
+    [`${date} 07:00:00`, id, date]
   );
 }
-
 
 export default {
   findDoctorByEmail,
@@ -94,5 +100,5 @@ export default {
   findDoctorByCity,
   findDoctorByState,
   findDoctorByName,
-  getSchedule
+  getSchedule,
 };

@@ -9,5 +9,4 @@ routes.use("/patients", patientsRoutes);
 routes.use("/doctors", doctorsRoutes);
 routes.use("/appointments", appointmentsRoutes);
 
-
 export default routes;

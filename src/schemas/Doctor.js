@@ -7,5 +7,5 @@ export const doctorSchema = joi.object({
   confirmPassword: joi.string().valid(joi.ref("password")).required(),
   specialty: joi.string().required(),
   city: joi.string().required(),
-  state: joi.string().required()
+  state: joi.string().required(),
 });

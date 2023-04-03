@@ -1,9 +1,9 @@
 import patientService from "../services/patientService.js";
 
 async function createPatient(req, res, next) {
-  const { name, email, password} = req.body;
+  const { name, email, password } = req.body;
   try {
-    await patientService.createPatient({ name, email, password});
+    await patientService.createPatient({ name, email, password });
     return res.sendStatus(201);
   } catch (err) {
     next(err);
