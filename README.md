@@ -10,11 +10,11 @@ Rota com autenticação de paciente, encontra todas as consultas de um paciente,
 ### /appointments/doctor
 Rota com autenticação de medico, encontra todas as consultas de um medico, não é necessário passar nenhum body
 
-### /appointments/finish
-Rota com autenticação de medico, finaliza uma consulta, necessário informar "appointment_id" pelo body
+### /appointments/finish/:appointment_id
+Rota com autenticação de medico, finaliza uma consulta, necessário informar id da consulta pelo params
 
-### /appointments/cancel
-Rota com autenticação de medico, cancela uma consulta, necessário informar "appointment_id" pelo body
+### /appointments/cancel/:appointment_id
+Rota com autenticação de medico, cancela uma consulta, necessário informar id da consulta pelo params
 
 ### /appointments/finished/patient
 Rota com autenticação de paciente, retorna um histórico de consultas finalizadas de um paciente, não é necessário informar nenhum dado pelo body 
@@ -42,7 +42,10 @@ Rota para retornar todos os médicos de uma cidade, enviar "city" pelo body
 Rota para retornar todos os médicos de um estado, enviar "state" pelo body 
 
 ### /doctors/name
-Rota para retornar todos os médicos com certo nome, enviar "name" pelo body 
+Rota para retornar todos os médicos com certo nome, enviar "name" pelo body
+
+### /doctors/schedule
+Rota para retornar todos os horários disponíveis de um médico em um dia específico, enviar "id" do médico e "date" no formato yyyy-mm-aa pelo body 
 
 #
 ## Pacientes

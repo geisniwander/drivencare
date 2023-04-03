@@ -8,7 +8,8 @@ function conflictError(message) {
   function ConflictDateError(message) {
     return {
       name: "ConflictDateError",
-      message:"A data/horário não estão disponíveis (consulta agendada no horário ou fora do horário de atendimento",
+      message:`A data/horário não estão disponíveis (consulta agendada no horário ou fora do horário de atendimento). Lembre-se: o horário de funcionamento é entre
+      as 07:00:00 horas e as 18:00:00 e só é possível agendar consultas em horarios cheios ou com meia hora, como: 07:00:00, 07:30:00, 08:00:00.`,
     };
   }
   

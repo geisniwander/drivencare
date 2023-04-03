@@ -58,11 +58,20 @@ async function findDoctorByName({name}) {
   return rows;
 }
 
+async function getSchedule({id, date}) {
+
+  const { rowCount, rows } = await doctorsRepository.getSchedule({id, date});
+  if (!rowCount) throw errors.notFoundError(id);
+
+  return rows;
+}
+
 export default {
   create,
   signin,
   findDoctorByCity,
   findDoctorByState,
   findDoctorBySpecialty,
-  findDoctorByName
+  findDoctorByName,
+  getSchedule
 };

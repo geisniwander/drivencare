@@ -14,7 +14,7 @@ async function createAppointment(req, res, next) {
 
 async function cancelAppointment(req, res, next) {
   const { id } = res.locals.doctor; 
-  const { appointment_id } = req.body;
+  const { appointment_id } = req.params;
   try {
     await appointmentService.cancelAppointment({appointment_id, id});
     return res.sendStatus(201);
@@ -26,7 +26,7 @@ async function cancelAppointment(req, res, next) {
 async function finishAppointment(req, res, next) {
   const { id } = res.locals.doctor; 
 
-  const { appointment_id } = req.body;
+  const { appointment_id } = req.params;
 
   try {
     await appointmentService.finishAppointment({appointment_id, id});

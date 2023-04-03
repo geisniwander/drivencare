@@ -1,21 +1,21 @@
 import connectionDb from "../config/database.js";
 
 
-async function createAppointment({ patient_id, doctor_id, date, hour}) {
+async function createAppointment({ id, doctor_id, date, hour}) {
 
     await connectionDb.query(
     `
         INSERT INTO "public.appointments" (patient_id, doctor_id, date, time)
         VALUES ($1, $2, $3, $4)
     `,
-    [patient_id, doctor_id, date, hour]
+    [id, doctor_id, date, hour]
   );
 }
 
 async function findAppointmentsByDate(doctor_id, date, time) {
     const times = new Date(`${date}T${time}`);
-    const startTime = new Date(times.getTime() - 30 * 60000)
-    const endTime = new Date(times.getTime() + 30 * 60000);
+    const startTime = new Date(times.getTime() - 29 * 60000)
+    const endTime = new Date(times.getTime() + 29 * 60000);
 
     return await connectionDb.query(
         `SELECT "public.appointments".id, "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date, "public.appointments".canceled,
@@ -72,7 +72,7 @@ async function findAppointmentsByDate(doctor_id, date, time) {
 
   async function findAppointmentsFinishedByPatient(id) {
     return await connectionDb.query(
-        `SELECT "public.appointments".id, "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date, "public.appointments".canceled
+        `SELECT "public.appointments".id, "public.doctors".name AS doctor_name, "public.patients".name AS patient_name, "public.doctors".specialty, "public.appointments".date, "public.appointments".canceled,
         "public.appointments".finished
         FROM "public.appointments"
         JOIN "public.doctors" ON "public.appointments".doctor_id = "public.doctors".id

@@ -60,6 +60,16 @@ async function findDoctorsByName(req, res, next) {
   }
 }
 
+async function getSchedule(req, res, next) {
+  const { id, date } = req.body;
+  try {
+    const schedule = await doctorService.getSchedule({ id, date });
+    return res.send({ schedule });
+  } catch (err) {
+    next(err);
+  }
+}
+
 
 
 export default {
@@ -68,5 +78,6 @@ export default {
   findDoctorsBySpecialty,
   findDoctorsByCity,
   findDoctorsByState,
-  findDoctorsByName
+  findDoctorsByName,
+  getSchedule
 };

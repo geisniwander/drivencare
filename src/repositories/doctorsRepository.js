@@ -64,6 +64,27 @@ async function findDoctorByName(name) {
   );
 }
 
+async function getSchedule({id, date}) {
+  return await connectionDb.query(
+    `    
+    SELECT slots.time
+    FROM (
+      SELECT generate_series(
+        $1::timestamp,
+        $1::timestamp + interval '11 hours',
+        '30 minutes'::interval
+      ) AS time
+    ) AS slots
+    LEFT JOIN "public.appointments" AS a
+    ON a.doctor_id = $2
+    AND a.date = $3
+    AND slots.time BETWEEN (a.date || ' ' || a.time)::timestamp - interval '29 minutes'
+    AND (a.date || ' ' || a.time)::timestamp + interval '29 minutes'
+    WHERE a.id IS NULL;  `,
+    [`${date} 07:00:00`,id, date]
+  );
+}
+
 
 export default {
   findDoctorByEmail,
@@ -72,5 +93,6 @@ export default {
   findDoctorBySpecialty,
   findDoctorByCity,
   findDoctorByState,
-  findDoctorByName
+  findDoctorByName,
+  getSchedule
 };

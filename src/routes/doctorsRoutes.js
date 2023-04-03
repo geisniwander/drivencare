@@ -11,5 +11,7 @@ doctorsRoutes.get("/specialty", doctorsController.findDoctorsBySpecialty)
 doctorsRoutes.get("/city", doctorsController.findDoctorsByCity)
 doctorsRoutes.get("/state", doctorsController.findDoctorsByState)
 doctorsRoutes.get("/name", doctorsController.findDoctorsByName)
+doctorsRoutes.get("/schedule",doctorsController.getSchedule )
+
 
 export default doctorsRoutes;

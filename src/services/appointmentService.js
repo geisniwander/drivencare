@@ -2,12 +2,21 @@ import errors from "../errors/index.js";
 import "dotenv/config";
 import appointmentsRepository from "../repositories/appointmentsRepository.js";
 
-async function createAppointment({ patient_id, doctor_id, date, hour }) {
+async function createAppointment({ id, doctor_id, date, hour }) {
+  
+  const validHour = /^([01]\d|2[0-3]):(00|30)(:[0-5]\d)?$/i.test(hour);
+  const [hourString, minuteString] = hour.split(':');
+  const hourNumber = parseInt(hourString, 10);
+  const minuteNumber = parseInt(minuteString, 10);
+
+  if (!validHour || hourNumber < 7 || hourNumber >= 18 || (minuteNumber !== 0 && minuteNumber !== 30)) {
+    throw errors.ConflictDateError(date);
+  }
 
   const { rowCount } = await appointmentsRepository.findAppointmentsByDate(doctor_id, date, hour);
   if (rowCount) throw errors.ConflictDateError(date);
 
-  await appointmentsRepository.createAppointment({patient_id, doctor_id, date, hour});
+  await appointmentsRepository.createAppointment({id, doctor_id, date, hour});
 }
 
 async function cancelAppointment({appointment_id, id}) {
