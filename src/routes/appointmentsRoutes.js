@@ -2,16 +2,18 @@ import { Router } from "express";
 import appointmentsController from "../controllers/appointmentsController.js";
 import {validateSchema} from "../middlewares/schemaValidationMiddleware.js";
 import { appointmentSchema } from "../schemas/Appointment.js";
+import authValidationDoctors from "../middlewares/authMiddlewareDoctors.js";
+import authValidationPatients from "../middlewares/authMiddlewarePatients.js";
+
 
 const appointmentsRoutes = Router();
 
-appointmentsRoutes.post("/create", validateSchema(appointmentSchema) , appointmentsController.createAppointment)
-appointmentsRoutes.put("/cancel", appointmentsController.cancelAppointment)
-appointmentsRoutes.put("/finish", appointmentsController.finishAppointment)
-appointmentsRoutes.get("/doctor", appointmentsController.findAppointmentsByDoctorId)
-appointmentsRoutes.get("/patient", appointmentsController.findAppointmentsByPatientId)
-appointmentsRoutes.get("/finished/patient", appointmentsController.findAppointmentsFinishedByPatient)
-appointmentsRoutes.get("/finished/doctor", appointmentsController.findAppointmentsFinishedByDoctor)
-
+appointmentsRoutes.post("/create", authValidationPatients.authValidationPatients, validateSchema(appointmentSchema) , appointmentsController.createAppointment)
+appointmentsRoutes.get("/patient", authValidationPatients.authValidationPatients, appointmentsController.findAppointmentsByPatientId)
+appointmentsRoutes.get("/finished/patient", authValidationPatients.authValidationPatients, appointmentsController.findAppointmentsFinishedByPatient)
+appointmentsRoutes.put("/cancel",  authValidationDoctors.authValidationDoctors, appointmentsController.cancelAppointment)
+appointmentsRoutes.put("/finish",  authValidationDoctors.authValidationDoctors, appointmentsController.finishAppointment)
+appointmentsRoutes.get("/doctor",  authValidationDoctors.authValidationDoctors, appointmentsController.findAppointmentsByDoctorId)
+appointmentsRoutes.get("/finished/doctor", authValidationDoctors.authValidationDoctors, appointmentsController.findAppointmentsFinishedByDoctor)
 
 export default appointmentsRoutes;

@@ -1,7 +1,6 @@
 import joi from 'joi';
 
 export const appointmentSchema = joi.object({
-  patient_id: joi.number().required(),
   doctor_id: joi.number().required(),
   date: joi.date().required(),
   hour: joi.string()
